@@ -1,0 +1,129 @@
+<tr>
+	<td><strong>Maintainer</strong></td>
+	<td>
+	{% if distinfo["maintainer"] %}
+		{{ distinfo["maintainer"] }}
+	{% else %}
+		<span class="label label-warning">No maintainer specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Maintainer Email</strong></td>
+	<td>
+	{% if distinfo["maintainer-email"] %}
+		<a href="mailto:{{ distinfo["maintainer-email"] }}">
+		<img src="{{ url_for('static', filename='mail.png') }}" class="midicon"> 
+		{{ distinfo["author-email"] }}</a>
+	{% else %}
+		<span class="label label-warning">No maintainer email specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Requires Python</strong></td>
+	<td>
+	{% if distinfo["requires-python"] %}
+		{{ distinfo["requires-python"] }}
+	{% else %}
+		<span class="label label-important">No python requirement specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Requires External</strong></td>
+	<td>
+		{% set requires_external = distinfo["requires-external"] %}
+
+		{% if not requires_external %}
+			<span class="label label-important">No external requirements specified</span>
+		{% elif requires_external is string %}
+			{{ requires_external }}
+		{% else %}
+			<ul>
+			{% for req in requires_external %}
+				<li>{{ req }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Requires Dist</strong></td>
+	<td>
+		{% set requires_dist = distinfo["requires-dist"] %}
+
+		{% if not requires_dist %}
+			<span class="label label-important">No requirements specified</span>
+		{% elif requires_dist is string %}
+			{{ requires_dist }}
+		{% else %}
+			<ul>
+			{% for req in requires_dist %}
+				<li>{{ req }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Provides Dist</strong></td>
+	<td>
+		{% set provides_dist = distinfo["provides-dist"] %}
+
+		{% if not provides_dist %}
+			<span class="label label-important">No providers specified</span>
+		{% elif provides_dist is string %}
+			{{ provides_dist }}
+		{% else %}
+			<ul>
+			{% for prov in provides_dist %}
+				<li>{{ prov }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Obsoletes Dist</strong></td>
+	<td>
+		{% set obsoletes_dist = distinfo["obsoletes-dist"] %}
+
+		{% if not obsoletes_dist %}
+			<span class="label label-important">No obsoletes specified</span>
+		{% elif obsoletes_dist is string %}
+			{{ obsoletes_dist }}
+		{% else %}
+			<ul>
+			{% for obs in obsoletes_dist %}
+				<li>{{ obs }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Project URL</strong></td>
+	<td>
+		{% set project_url = distinfo["project-url"] %}
+
+		{% if not project_url %}
+			<span class="label label-important">No Project URL specified</span>
+		{% elif project_url is string %}
+			{{ project_url }}
+		{% else %}
+			<ul>
+			{% for url in project_url %}
+				<li>{{ url }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>

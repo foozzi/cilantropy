@@ -1,0 +1,153 @@
+
+						
+<tr>
+	<td><strong>Metadata Version</strong></td>
+	<td>{{ distinfo["metadata-version"] }}</td>
+</tr>	
+
+<tr>
+	<td><strong>Package Name</strong></td>
+	<td>{{ distinfo["name"] }}</td>
+</tr>
+
+<tr>
+	<td><strong>Version</strong></td>
+	<td>{{ distinfo["version"] }}</td>
+</tr>
+
+<tr>
+	<td><strong>Platform</strong></td>
+	<td>
+		{% set platforms = distinfo["platform"] %}
+
+		{% if not platforms %}
+			<span class="label label-important">No platform specified</span>
+		{% elif platforms is string %}
+			{{ platforms }}
+		{% else %}
+			<ul>
+			{% for platform in platforms %}
+				<li>{{ platform }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Supported Platform <br />(<em>binary distributions</em>)</strong></td>
+	<td>
+		{% set platforms = distinfo["supported-platform"] %}
+
+		{% if not platforms %}
+			<span class="label label-warning">No supported platform specified</span>
+		{% elif platforms is string %}
+			{{ platforms }}
+		{% else %}
+			<ul>
+			{% for platform in platforms %}
+				<li>{{ platform }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Keywords</strong></td>
+	<td>
+		{% set keywords = distinfo["keywords"] %}
+		{% if not keywords %}
+			<span class="label label-warning">No keywords specified</span>
+		{% elif keywords is string %}
+			<span class="tag-lvl1">
+				<span class="tag-lvl2">{{ keywords }}</span>
+			</span>
+		{% else %}
+			{% for keyw in keywords %}
+			<span class="tag-lvl1">
+				<span class="tag-lvl2">{{ keyw|title }}</span>
+			</span>
+			{% endfor %}
+		{% endif %}
+
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Home page</strong></td>
+	<td>
+	{% if distinfo["home-page"] %}
+		<a href="{{ distinfo["home-page"] }}">
+		<img src="{{ url_for('static', filename='world.png') }}" class="midicon"> 
+		{{ distinfo["home-page"] }}</a>
+	{% else %}
+		<span class="label label-warning">No home page specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+
+<tr>
+	<td><strong>Author</strong></td>
+	<td>
+	{% if distinfo["author"] %}
+		{{ distinfo["author"] }}
+	{% else %}
+		<span class="label label-warning">No author specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Author Email</strong></td>
+	<td>
+	{% if distinfo["author-email"] %}
+		<a href="mailto:{{ distinfo["author-email"] }}">
+		<img src="{{ url_for('static', filename='mail.png') }}" class="midicon"> 
+		{{ distinfo["author-email"] }}</a>
+	{% else %}
+		<span class="label label-important">No author email specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Project License</strong></td>
+	<td>
+	{% if distinfo["license"] %}
+		{{ distinfo["license"] }}
+	{% else %}
+		<span class="label label-important">No license specified</span>
+	{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Classifiers</strong></td>
+	<td>
+		{% set classifier = distinfo["classifier"] %}
+		{% if classifier %}
+		<ul class="classifier_un">
+			{% for key,value in classifier.items() recursive %}
+				<li class="classifier_li">{{ key }}</li>
+				{% if value %}
+					<ul class="classifier_un">{{ loop(value.items()) }}</ul>
+				{% endif %}
+			{% endfor %}
+
+
+		</ul>
+		{% else %}
+			<span class="label label-warning">No classifiers specified</span>
+		{% endif %}
+
+		<br />
+	</td>
+</tr>
+
+
+
+
+
+

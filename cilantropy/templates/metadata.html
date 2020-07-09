@@ -1,0 +1,51 @@
+{% if distinfo["metadata-version"] %}
+
+	{{ distinfo["summary"] }} <br /> <br />
+
+	<table class="table table-bordered">
+	<tbody>
+
+		{% if distinfo["metadata-version"]=="1.0" %}
+
+			{% include 'metadata10.html' %}
+
+		{% endif %}
+
+		{% if distinfo["metadata-version"]=="1.1" %}
+
+			{% include 'metadata10.html' %}
+			{% include 'metadata11.html' %}
+
+		{% endif %}
+
+		{% if distinfo["metadata-version"]=="1.2" %}
+
+			{% include 'metadata10.html' %}
+			{% include 'metadata11.html' %}
+			{% include 'metadata12.html' %}
+
+		{% endif %}
+
+		{% if distinfo["metadata-version"]=="2.1" %}
+
+			{% include 'metadata10.html' %}
+			{% include 'metadata11.html' %}
+			{% include 'metadata12.html' %}
+			{% include 'metadata21.html' %}
+
+		{% endif %}
+
+	</tbody>
+	</table>
+
+{% else %}
+	<div class="alert-message block-message error">
+		<p><strong>No metadata information available !</strong> Cilantropy wasn't able to find 
+		the package information.</p><br />
+		<ul>
+		  <li>The package probably doesn't have the <strong>PKG-INFO</strong> metadata.</li>
+		  <li>Cilantropy wasn't able to find the <strong>PKG-INFO</strong> metadata.</li>
+		</ul>
+	</div>
+{% endif %}
+

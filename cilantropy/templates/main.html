@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <title>Cilantropy, package manager for Python</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.16.custom.css') }}">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.8.16.custom.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='ajax-queue.js') }}"></script>  
+
+  <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link href="{{ url_for('static', filename='extra.css') }}" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
+  {% block head %}{% endblock %}
+
+  <script type="text/javascript">
+
+	// This is going to bind the events ajaxStart and ajaxStop into the
+	// global ajax progress animation on the left of the topbar navigation
+    $(document).ready(function() {
+		$('#progressbar').progressbar();
+		$('#topbar').dropdown();
+    });
+
+	// Sets the value of the progress bar
+	function set_progress_bar_value(prog_value)
+	{
+		$('#progressbar').progressbar({value: prog_value});
+	}
+
+	// Main function to check all updates, it is going to send multiple
+	// ajax requests to a queue
+	function check_all_updates()
+	{
+		set_progress_bar_value(0);
+
+		$("#check_updates").fadeIn("slow");
+	
+		$('img[id^=img]').each(function(current_distr) {
+			var dist_id = "#" + $(this).prop("id");
+			var dist_key = $(this).attr("pname");
+
+			$.ajaxQueue({
+				url: '/pypi/check_update/' + dist_key,
+				dataType: "json",
+				cache: false,
+				beforeSend: function(a,b) { 
+					$(dist_id).attr("src", "{{ url_for('static', filename='loader.gif') }}");
+					$(dist_id).parent().animate({"padding-left": "+=12px"}, "fast");
+				},
+				success: function(data) {
+
+					var prog_value = $("#progressbar").progressbar("option", "value");
+
+					if((current_distr+1) >= {{ distributions|length }})
+						$("#check_updates").fadeOut("slow");
+
+					prog_value = prog_value + 100.0/{{ distributions|length }};
+
+					set_progress_bar_value(prog_value);
+
+					if(data.has_update) {
+						$(dist_id).attr("src", 
+										"{{ url_for('static', filename='down-arrow.png') }}")
+										.stop(true,true).hide().fadeIn();
+					} else {
+						$(dist_id).attr("src", 
+										"{{ url_for('static', filename='box-icon.png') }}")
+										.stop(true,true).hide().fadeIn();
+					}
+
+					$(dist_id).parent().animate({"padding-left": "-=12px"}, "fast");
+
+				}
+			}); // ajax
+		}); // each img
+	}
+</script>
+
+  {% block js %}{% endblock %}
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  	<a class="navbar-brand" href="#">
+	  		<img src="{{ url_for('static', filename='cilantropy_icon.png') }}" class="midicon"> Cilantropy
+	  	</a>
+	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
+
+	  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    	<ul class="navbar-nav mr-auto">
+	      		<li class="nav-item {{ menu_home }}">
+	        		<a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
+	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link {{ menu_console_scripts }}" href="{{ url_for('console_scripts') }}">Console Scripts</a>
+	      		</li>
+	      		<li class="nav-item dropdown">
+	        		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	          			PyPI Repository
+	        		</a>
+	        		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	          			<a class="dropdown-item" href="javascript:check_all_updates();">Check all updates</a>
+	        		</div>
+	      		</li>
+	      		<li class="nav-item">
+	        		<a class="nav-link {{ menu_about }}" href="{{ url_for('about') }}">About</a>
+	      		</li>	      		
+	    </ul>
+	  </div>
+	</nav>
+
+	
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-3">
+
+				<div class="page-header">
+				<h2><img src="{{ url_for('static', filename='box.png') }}" class="midiconlarge" /> Packages</h2>
+				</div>
+
+				<div id="check_updates" class="progress-div">
+						Checking for updates... <br />
+						<div id="progressbar" style="width: 200px; height: 19px;"></div>
+						<br />
+				</div>
+
+
+				<ul class="list-group">
+				{% for dist_item in distributions|sort(attribute="project_name") %}
+
+					{% if dist_item.key|lower in pypi_update_cache %}
+						{% set img_src = url_for('static', filename='down-arrow.png') %}
+					{% else %}
+						{% set img_src = url_for('static', filename='box-icon.png') %}
+					{% endif %}
+
+					<li class="list-group-item">
+						<a href="{{ url_for('distribution', dist_name=dist_item.key) }}">
+							<img id="img_{{ dist_item.key|lower|replace('.','-') }}" src="{{ img_src }}"
+							class="midicon" pname="{{ dist_item.project_name }}"/>
+
+						{% if dist and dist.key == dist_item.key %}
+							{{ dist_item.project_name }} {{ dist_item.version }} <img src="{{ url_for('static', filename='left-arrow.png') }}" class="midicon" />
+						{% else %}
+							{{ dist_item.project_name }} {{ dist_item.version }}
+						{% endif %}
+
+						</a>
+
+					</li>
+
+				{% endfor %}
+				</ul>
+			</div> <!-- span3 -->
+
+			<div class="col-9">
+				<div class="page-header">
+					<h1>Cilantropy<small> A Package Manager for Python</small></h1>
+				</div>
+
+				<ul class="breadcrumb">
+					{% for path in breadpath %}
+						{% if loop.last %}
+							<li class="active">{{ path.title }}</li>
+						{% else %}
+							<li><a href="{{ path.href }}">{{ path.title }}</a><span class="divider">/</span></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+				<div class="page-header">
+				<h2>{% block section_title %}{% endblock %}</h2>
+				</div>
+				{% block content %}{% endblock %}
+
+			</div> <!-- span9 -->
+
+		</div> <!-- row -->
+
+		<hr>
+
+	    <footer class="footer">
+	        <p>
+			Created by <em>Tkachenko Igor</em> 2020 <a href="https://github.com/foozzi" target="_blank">@foozzi</a>.<br />
+
+			  Code licensed under the <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" target="_blank">
+			  original BSD License</a>.
+	        </p>
+	    </footer>
+
+	</div> <!-- container -->
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<tr>
+	<td><strong>Description-Content-Type</strong></td>
+	<td>
+		{% set description_content_type = distinfo["description-content-type"] %}
+
+		{% if not description_content_type %}
+			<span class="label label-important">No description-content-type specified</span>
+		{% elif description_content_type is string %}
+			{{ description_content_type }}
+		{% else %}
+			<ul>
+			{% for dct in description_content_type %}
+				<li>{{ dct }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>
+
+<tr>
+	<td><strong>Provides-Extra</strong></td>
+	<td>
+		{% set provides_extra = distinfo["provides-extra"] %}
+
+		{% if not provides_extra %}
+			<span class="label label-important">No provides-extra specified</span>
+		{% elif provides_extra is string %}
+			{{ provides_extra }}
+		{% else %}
+			<ul>
+			{% for pe in provides_extra %}
+				<li>{{ pe }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</td>
+</tr>

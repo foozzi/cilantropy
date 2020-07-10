@@ -1,6 +1,11 @@
 from setuptools import setup
-import cilantropy
+try:
+    import cilantropy
+except ImportError:
+    print("error: cilantropy requires Python 3 or greater.")
+    sys.exit(1)
 import sys
+import os
 
 # Cilantropy requirements
 install_requirements = [
@@ -12,9 +17,11 @@ install_requirements = [
         'docutils>=0.16'
 ]
 
+base_path = os.path.abspath(os.path.dirname(__file__))
+
 def long_description():
-    f = open("setup.rst", mode="r", encoding="utf-8")
-    return f.read()
+    with open(os.path.join(base_path, 'README.md'), 'r') as description:
+        return description.read()
 
 setup(
     name='Cilantropy',
@@ -25,6 +32,7 @@ setup(
     author_email='foozzione@gmail.com',
     description='A Python Package Manager interface.',
     long_description=long_description(),
+    long_description_content_type='text/markdown',
     packages=['cilantropy'],
     keywords='package manager, distribution tool, cilantropy',
     platforms='Any',

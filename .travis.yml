@@ -1,0 +1,10 @@
+language: python
+
+python:
+  - 3.2
+  - 3.6
+  - 3.8
+
+script: nosetests cilantropy
+install: python setup.py develop
+

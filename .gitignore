@@ -137,8 +137,3 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-
-# in dev disable
-.travis.yml
-screenshots/
-README.md

@@ -1,4 +1,4 @@
-include LICENSE setup.rst
+include LICENSE
 
 recursive-exclude cilantropy *.pyc
 recursive-exclude cilantropy *.pyo

@@ -152,6 +152,11 @@ Cilantropy uses the following external projects:
 
 > Cross-platform colored terminal text.
 
+[docutils](http://docutils.sourceforge.net/)
+
+> Docutils is an open-source text processing system for processing plaintext documentation
+> into useful formats, such as HTML or LaTeX.
+
 ## Compatibility
 
 Cilantropy is compatible with:
@@ -166,12 +171,6 @@ Cilantropy is compatible with:
   - Google Chrome
   - Internet Explorer 9/10
   - Safari
-
-## What's new in release v0.5 (unreleased, under development)
-
-  - Added instructions and example to use upstart (thanks to Thomas Léveil and Roman Gladkov)
-  - Added instructions and example to use systemd (thanks to Doug)
-  - Fixed a bug when the metadata information for classifiers isn't present
 
 ## Reporting bug
 

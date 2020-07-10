@@ -24,11 +24,10 @@
 		$.get('/pypi/releases/{{ dist.project_name }}', function(data) {
 			$('#modal-update .modal-dialog').html(data);
 			$('#modal-update').modal('show');
-
-			$(this).prop('disabled', false);
-			$(this).text('Check updates');
-		});
-
+			
+			$('#btn_check_updates').prop('disabled', false);
+			$('#btn_check_updates').text('Check updates');
+		});		
 	});
 
 

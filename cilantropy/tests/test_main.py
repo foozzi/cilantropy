@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '.')
 
 import unittest
-from stallion import main
+from cilantropy import main
 import xmlrpc.client
 import pkg_resources as _pkg_resources
 

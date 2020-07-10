@@ -1,10 +1,10 @@
-    import sys
+import sys
 sys.path.insert(0, '.')
 
 import unittest
 
-from stallion import __version__
-from stallion.metadata import parse_metadata, metadata_to_dict
+from cilantropy import __version__
+from cilantropy.metadata import parse_metadata, metadata_to_dict
 
 
 class Test_metadata(unittest.TestCase):

@@ -2,7 +2,6 @@ include LICENSE setup.rst
 
 recursive-exclude cilantropy *.pyc
 recursive-exclude cilantropy *.pyo
-recursive-exclude screenshots *
 
 recursive-include cilantropy/static *
 recursive-include cilantropy/templates *

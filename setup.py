@@ -9,6 +9,7 @@ install_requirements = [
         'jinja2>=2.11.2',
         'docopt>=0.6.2',
         'colorama>=0.4.3',
+        'docutils>=0.16'
 ]
 
 def long_description():

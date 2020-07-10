@@ -20,6 +20,7 @@ import logging
 import xmlrpc.client
     
 import pkg_resources as _pkg_resources
+from docutils.core import publish_parts
 
 from flask import Flask, render_template, url_for, jsonify
 
@@ -283,9 +284,10 @@ def distribution(dist_name=None):
         pkg_metadata = pkg_dist.get_metadata(metadata.METADATA_NAME[1])
     except FileNotFoundError:
         pass
-    
+
     parsed, key_known = metadata.parse_metadata(pkg_metadata)
     distinfo = metadata.metadata_to_dict(parsed, key_known)
+
 
     parts = None
     try:

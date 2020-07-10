@@ -161,7 +161,6 @@ def metadata_to_dict(parsed_metadata, key_known):
     :rtype: dictionary
     :returns: the processed metadata dictionary
     """
-
     mdict = {}
 
     for field in set(parsed_metadata.keys()):

@@ -23,9 +23,7 @@ import pkg_resources as _pkg_resources
 
 from flask import Flask, render_template, url_for, jsonify
 
-from docutils.core import publish_parts
-
-import cilantropy
+from cilantropy
 from cilantropy import metadata
 
 app = Flask(__name__)
@@ -225,6 +223,7 @@ def index():
 
     return render_template('system_information.html', **data)
 
+
 @app.route('/console_scripts')
 def console_scripts():
     """ Entry point for the global console scripts """
@@ -237,6 +236,7 @@ def console_scripts():
     data['scripts'] = entry_console
 
     return render_template('console_scripts.html', **data)
+
 
 @app.route('/about')
 def about():
@@ -261,7 +261,6 @@ def distribution(dist_name=None):
 
     :param dist_name: the package name
     """
-
     pkg_dist = get_pkg_res().get_distribution(dist_name)
 
     data = {}
@@ -298,6 +297,7 @@ def distribution(dist_name=None):
 
     data['distinfo'] = distinfo
     data['entry_map'] = pkg_dist.get_entry_map()
+    data['location'] = '{}/{}'.format(pkg_dist.location, dist_name)
 
     if parts is not None:
         data['description_render'] = parts['body']

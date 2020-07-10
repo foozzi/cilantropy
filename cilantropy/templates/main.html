@@ -2,19 +2,19 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <title>Cilantropy, package manager for Python</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.16.custom.css') }}">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.8.16.custom.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='ajax-queue.js') }}"></script>  
+  	<meta charset="utf-8">
+  	<title>Cilantropy, package manager for Python</title>
+  	<link rel="stylesheet" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.16.custom.css') }}">
+  	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  	<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.8.16.custom.min.js') }}"></script>
+  	<script type="text/javascript" src="{{ url_for('static', filename='ajax-queue.js') }}"></script>  
 
-  <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700' rel='stylesheet' type='text/css'>
+  	<link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link href="{{ url_for('static', filename='extra.css') }}" rel="stylesheet">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  	<link href="{{ url_for('static', filename='extra.css') }}" rel="stylesheet">
+  	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 
   {% block head %}{% endblock %}
@@ -138,7 +138,6 @@
 
 				<ul class="list-group">
 				{% for dist_item in distributions|sort(attribute="project_name") %}
-
 					{% if dist_item.key|lower in pypi_update_cache %}
 						{% set img_src = url_for('static', filename='down-arrow.png') %}
 					{% else %}

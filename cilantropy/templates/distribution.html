@@ -5,6 +5,7 @@
 
  $(document).ready(function() {
 
+
 	$('#back-to-top').click(function() {
 		window.scrollTo(0,0);
 		return false;
@@ -17,18 +18,19 @@
 	$('#btn_check_updates').button()
 
 	$('#btn_check_updates').click(function() {
-		$('#btn_check_updates').prop('disabled', true);
-		$('#btn_check_updates').text('Checking...');
+		$(this).prop('disabled', true);
+		$(this).text('Checking...');
 
 		$.get('/pypi/releases/{{ dist.project_name }}', function(data) {
 			$('#modal-update .modal-dialog').html(data);
 			$('#modal-update').modal('show');
 
-			$('#btn_check_updates').prop('disabled', false);
-			$('#btn_check_updates').text('Check updates');
+			$(this).prop('disabled', false);
+			$(this).text('Check updates');
 		});
 
 	});
+
 
  });
 
@@ -40,6 +42,7 @@
 	<img src="{{ url_for('static', filename='terminal-icon.png') }}" class="midiconlarge"> {{ dist.project_name }} 
 	<small>version {{ dist.version }}</small><br/>
 	{% if distinfo.summary %}<small>{{ distinfo.summary }}</small>{% endif %}
+	<p><span class="badge badge-secondary">{{location}}</span></p>
 {% endblock %}
 
 {% block content %}
@@ -50,7 +53,9 @@
 	<div class="card border-dark mb-3">
 	  <div class="card-header">Available Actions</div>
 	  <div class="card-body text-dark">
-	    <p class="card-text"><button class="btn btn-primary" id="btn_check_updates">Check updates</button></p>
+	    <p class="card-text">
+	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>
+	    </p>
 	  </div>
 	</div>
 
@@ -107,22 +112,14 @@
 	</div>
 </div>
 
+<!-- Modal for updates information -->
 <div class="modal hide fade" id="modal-update">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Update information <small>(PyPI Repository)</small></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="modal-update-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
-      </div>
+
     </div>
   </div>
 </div>
+
 
 {% endblock %}

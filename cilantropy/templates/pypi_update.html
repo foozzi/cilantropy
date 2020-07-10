@@ -39,8 +39,8 @@
 			<p>
 				A new version of the package <strong>{{ dist_name }}</strong> was found in the official
 				PyPI repository. You have the version <strong>{{ current_version }}</strong> 
-				<span class="label">YOUR VERSION</span>, and the last version on the PyPI repository
-				is <strong>{{ pypi_info[0] }}</strong> <span class="label label-success">NEW</span>.
+				<span class="badge badge-secondary">YOUR VERSION</span>, and the last version on the PyPI repository
+				is <strong>{{ pypi_info[0] }}</strong> <span class="badge badge-success">NEW</span>.
 			</p>
 			<p>
 				You can use <strong>pip</strong> to update it using the following
@@ -78,9 +78,9 @@
 			<ul>
 			{% for version in pypi_info[:5] %}
 				{% if version|lower == current_version|lower %}
-					<li>{{ version }} <span class="label">YOUR VERSION</span></li>
+					<li>{{ version }} <span class="badge badge-secondary">YOUR VERSION</span></li>
 				{% elif version|lower == pypi_info[0]|lower %}
-					<li>{{ version }} <span class="label label-success">NEW</span></li>
+					<li>{{ version }} <span class="badge badge-success">NEW</span></li>
 				{% else %}
 					<li>{{ version }}</li>
 				{% endif %}

@@ -23,7 +23,7 @@ import pkg_resources as _pkg_resources
 
 from flask import Flask, render_template, url_for, jsonify
 
-from cilantropy
+import cilantropy
 from cilantropy import metadata
 
 app = Flask(__name__)

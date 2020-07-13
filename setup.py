@@ -23,6 +23,8 @@ def long_description():
     with open(os.path.join(base_path, 'README.md'), 'r') as description:
         return description.read()
 
+DOWNLOAD = "https://github.com/foozzi/cilantropy/archive/%s.tar.gz" % cilantropy.__version__
+
 setup(
     name='Cilantropy',
     version=cilantropy.__version__,

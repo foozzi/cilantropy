@@ -111,7 +111,7 @@ def cmd_show(args, short=False):
     except FileNotFoundError:
         pass    
     parsed, key_known = metadata.parse_metadata(pkg_metadata)
-    distinfo = metadata.metadata_to_dict(parsed, key_known)
+    distinfo = metadata.metadata_to_dict(parsed, key_known)  
 
     proj_head = Fore.GREEN + Style.BRIGHT + pkg_dist.project_name
     proj_head += Fore.YELLOW + Style.BRIGHT + ' ' + pkg_dist.version

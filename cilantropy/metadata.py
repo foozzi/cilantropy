@@ -62,10 +62,13 @@ HEADER_META = {
     '1.0': HEADER_META_1_0,
     '1.1': HEADER_META_1_1,
     '1.2': HEADER_META_1_2,
+    '2.0': HEADER_META_1_2,
     '2.1': HEADER_META_2_1
 }
 
 METADATA_NAME = ['PKG-INFO', 'METADATA']
+# Description file for pep-0426
+DESCRIPTION_2_0 = ['DESCRIPTION.rst']
 
 
 def parse_metadata(metadata):
@@ -174,3 +177,6 @@ def metadata_to_dict(parsed_metadata, key_known):
             mdict[fl_name] = fl_processed
 
     return mdict
+
+
+def parse_description_2_0():

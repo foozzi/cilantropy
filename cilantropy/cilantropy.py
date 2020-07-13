@@ -288,8 +288,17 @@ def distribution(dist_name=None):
     parsed, key_known = metadata.parse_metadata(pkg_metadata)
     distinfo = metadata.metadata_to_dict(parsed, key_known)
 
-
     parts = None
+    """ get description from pep-0426 """
+    if distinfo['metadata-version'] == '2.0':    
+        distinfo['description'] = pkg_dist.get_metadata(metadata.DESCRIPTION_2_0[0])    
+        try:
+            parts = publish_parts(source=distinfo['description'],
+                          writer_name='html',
+                          settings_overrides=settings_overrides)
+        except:
+            pass
+
     try:
         parts = publish_parts(source=distinfo['description'],
                               writer_name='html',

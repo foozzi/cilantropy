@@ -1,6 +1,6 @@
 # Cilantropy
 
-[![Build Status](https://travis-ci.com/foozzi/cilantropy.svg?branch=master)](https://travis-ci.com/foozzi/cilantropy)
+[![Build Status](https://travis-ci.com/foozzi/cilantropy.svg?branch=master)](https://travis-ci.com/foozzi/cilantropy) [![Build Status](https://img.shields.io/docker/cloud/build/fz11/cilantropy)](https://hub.docker.com/r/fz11/cilantropy) 
 
 
 Cilantropy is a Python Package Manager interface created to provide an "easy-to-use" visual and also
@@ -111,6 +111,20 @@ $ sudo service cilantropy status
 
 You can customize the host and port the cilantropy service will be listening on by editing the file `/etc/default/cilantropy`.
 
+## Authentication
+
+[BasicAuth with nginx](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
+
+In general, this app does not come with authentication. However, it is easy to setup basic auth to restrict unwanted access.
+Here is how this can be done when using nginx.
+
+### Configure the auth file
+
+1. Verify that `apache2-utils` (Debian, Ubuntu) or `httpd-tools` (RHEL/CentOS/Oracle Linux) is installed
+2. Run the htpasswd utility to create a new user and set a passwort.
+    - Make sure, that the directory exists
+    - Remove the `-c` flag, if you have created a user before, since it creates the inital user/passwort file
+    - `sudo htpasswd -c /etc/apache2/.htpasswd user1`
 
 ## Using Cilantropy
 

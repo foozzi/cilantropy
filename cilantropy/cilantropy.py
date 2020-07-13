@@ -20,7 +20,7 @@ import xmlrpc.client
 import pkg_resources as _pkg_resources
 from docutils.core import publish_parts
 
-from flask import Flask, render_template, url_for, jsonify
+from flask import Flask, render_template, url_for, jsonify, abort
 
 import cilantropy
 from . import metadata
@@ -141,7 +141,11 @@ def check_pypi_update(dist_name):
     :return: json with the attribute "has_update"
     """
     pkg_res = get_pkg_res()
-    pkg_dist_version = pkg_res.get_distribution(dist_name).version
+    try:
+        pkg_dist_version = pkg_res.get_distribution(dist_name).version
+    except _pkg_resources.DistributionNotFound:
+        abort(404)
+
     pypi_rel = get_pypi_releases(dist_name)
 
     if pypi_rel:
@@ -170,8 +174,11 @@ def releases(dist_name):
     pkg_res = get_pkg_res()
 
     data = {}
+    try:
+        pkg_dist_version = pkg_res.get_distribution(dist_name).version
+    except _pkg_resources.DistributionNotFound:
+        abort(404)
 
-    pkg_dist_version = pkg_res.get_distribution(dist_name).version
     pypi_rel = get_pypi_releases(dist_name)
 
     data["dist_name"] = dist_name
@@ -262,7 +269,10 @@ def distribution(dist_name=None):
 
     :param dist_name: the package name
     """
-    pkg_dist = get_pkg_res().get_distribution(dist_name)
+    try:
+        pkg_dist = get_pkg_res().get_distribution(dist_name)
+    except _pkg_resources.DistributionNotFound:
+        abort(404)
 
     data = {}
     data.update(get_shared_data())

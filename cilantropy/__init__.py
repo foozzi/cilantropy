@@ -1,4 +1,3 @@
-__all__ = ['main', 'metadata', 'console']
-__author__ = 'Tkachenko Igor'
-__author_url__ = 'https://github.com/foozzi'
-__version__ = '0.1'
+from .settings import __version__, __all__, __author__, __author_url__
+
+__all__ = ["__author__", "__version__", "__all__", "__author_url__"]

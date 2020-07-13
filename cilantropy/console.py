@@ -6,10 +6,10 @@
 :mod:`console` -- Cilantropy entry-point for console commands
 ==================================================================
 '''
-import cilantropy
-from cilantropy.main import get_shared_data, get_pkg_res
-from cilantropy.main import get_pypi_search, get_pypi_releases
-from cilantropy import metadata
+from .cilantropy import get_shared_data, get_pkg_res
+from .cilantropy import get_pypi_search, get_pypi_releases
+from . import metadata
+from .settings import __version__, __author__, __author_url__
 
 from docopt import docopt
 
@@ -331,7 +331,7 @@ def run_main():
 
     arguments = docopt(run_main.__doc__,
         version='Cilantropy v.%s - Python List Packages (PLP)' %
-        cilantropy.__version__)
+        __version__)
     
     if arguments['list']:
         cmd_list(arguments)

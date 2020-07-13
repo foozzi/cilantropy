@@ -55,7 +55,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'cilantropy = cilantropy.main:run_main',
+            'cilantropy = cilantropy.__main__:run_main',
             'plp = cilantropy.console:run_main'
         ],
     },

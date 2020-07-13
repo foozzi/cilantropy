@@ -50,6 +50,28 @@ Upgrading using easy_install:
 
     $ easy_install -U cilantropy
 
+### Docker
+
+Repository @ [DockerHub](https://hub.docker.com/r/fz11/cilantropy)
+
+Docker Compose excerpt
+
+```yaml
+# Docker Compose excerpt
+services:
+  nginx-ui:
+    image: fz11/cilantropy:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - nginx:/etc/nginx
+```
+
+### uWSGI
+```bash
+uwsgi --http 0.0.0.0:8080 --wsgi-file wsgi.py --callable app --processes 1 --threads 8
+```
+
 ### Installing as a systemd service
 
 If you're running Linux with [systemd](http://www.freedesktop.org/wiki/Software/systemd)

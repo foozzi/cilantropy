@@ -177,6 +177,3 @@ def metadata_to_dict(parsed_metadata, key_known):
             mdict[fl_name] = fl_processed
 
     return mdict
-
-
-def parse_description_2_0():

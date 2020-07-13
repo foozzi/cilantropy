@@ -46,6 +46,7 @@ setup(
     install_requires=install_requirements,
     tests_require=['nose'],
     test_suite='nose.collector',
+    download_url=DOWNLOAD,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',

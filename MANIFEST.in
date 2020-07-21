@@ -1,8 +1,0 @@
-include LICENSE
-
-recursive-exclude cilantropy *.pyc
-recursive-exclude cilantropy *.pyo
-
-recursive-include cilantropy/static *
-recursive-include cilantropy/templates *
-

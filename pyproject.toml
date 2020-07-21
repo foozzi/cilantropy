@@ -1,0 +1,40 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "cilantropy"
+author = "Tkachenko Igor"
+author-email = "foozzione@gmail.com"
+home-page = "https://github.com/foozzi/cilantropy"
+description-file = "README.md"
+requires-python = ">=3"
+keywords = "package manager,distribution tool,cilantropy"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+requires = [
+    "Flask>=1.1.2",
+    "colorama>=0.4.3",
+    "docopt>=0.6.2",
+    "docutils>=0.16",
+    "jinja2>=2.11.2"
+]
+
+[tool.flit.metadata.requires-extra]
+test = ["nose"]
+dev = ["flit>=2,<4"]
+uwsgi = ["uWSGI>=2.0.19.1"]
+
+[tool.flit.scripts]
+cilantropy = "cilantropy.__main__:run_main"
+plp = "cilantropy.console:run_main"
+
+[tool.flit.metadata.urls]
+Download = "https://github.com/foozzi/cilantropy/archive/0.2.tar.gz"

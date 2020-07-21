@@ -40,16 +40,6 @@ Upgrading using pip:
 
     $ pip install --upgrade cilantropy
 
-or using easy install:
-
-Installing using easy_install:
-
-    $ easy_install cilantropy
-
-Upgrading using easy_install:
-
-    $ easy_install -U cilantropy
-
 ### Docker
 
 Repository @ [DockerHub](https://hub.docker.com/r/fz11/cilantropy)
@@ -157,7 +147,9 @@ You only need to call the script (the -w option will automatically open your bro
 Developers can setup a development environment using the "develop" command
 from setuptools:
 
-    $ python setup.py develop
+    $ git clone git@github.com:foozzi/cilantropy.git && cd cilantropy
+    $ pip install flit --user
+    $ flit install
     $ cilantropy
 
 ## Requirements

@@ -5,4 +5,6 @@ python:
   - 3.8
 
 script: nosetests cilantropy
-install: python setup.py develop
+install: 
+  - pip install flit
+  - flit install

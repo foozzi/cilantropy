@@ -11,7 +11,7 @@ description-file = "README.md"
 requires-python = ">=3"
 keywords = "package manager,distribution tool,cilantropy"
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Environment :: Web Environment",
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
@@ -37,4 +37,4 @@ cilantropy = "cilantropy.__main__:run_main"
 plp = "cilantropy.console:run_main"
 
 [tool.flit.metadata.urls]
-Download = "https://github.com/foozzi/cilantropy/archive/0.2.tar.gz"
+Download = "https://github.com/foozzi/cilantropy/archive/0.2.1.tar.gz"

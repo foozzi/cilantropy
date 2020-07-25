@@ -4,36 +4,25 @@
 <head>
   	<meta charset="utf-8">
   	<title>Cilantropy, package manager for Python</title>
-  	<link rel="stylesheet" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.16.custom.css') }}">
+  	<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
   	<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-  	<script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.8.16.custom.min.js') }}"></script>
-  	<script type="text/javascript" src="{{ url_for('static', filename='ajax-queue.js') }}"></script>  
+  	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+  	<script type="text/javascript" src="{{ url_for('static', filename='js/ajax-queue.js') }}"></script>  
 
   	<link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700' rel='stylesheet' type='text/css'>
 
   	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  	<link href="{{ url_for('static', filename='extra.css') }}" rel="stylesheet">
+  	<link href="{{ url_for('static', filename='css/extra.css') }}" rel="stylesheet">
   	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  	<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 
   {% block head %}{% endblock %}
 
-  <script type="text/javascript">
+</head>
 
-	// This is going to bind the events ajaxStart and ajaxStop into the
-	// global ajax progress animation on the left of the topbar navigation
-    $(document).ready(function() {
-		$('#progressbar').progressbar();
-		$('#topbar').dropdown();
-    });
-
-	// Sets the value of the progress bar
-	function set_progress_bar_value(prog_value)
-	{
-		$('#progressbar').progressbar({value: prog_value});
-	}
-
+<script type="text/javascript">
 	// Main function to check all updates, it is going to send multiple
 	// ajax requests to a queue
 	function check_all_updates()
@@ -41,7 +30,7 @@
 		set_progress_bar_value(0);
 
 		$("#check_updates").fadeIn("slow");
-	
+
 		$('img[id^=img]').each(function(current_distr) {
 			var dist_id = "#" + $(this).prop("id");
 			var dist_key = $(this).attr("pname");
@@ -83,8 +72,7 @@
 	}
 </script>
 
-  {% block js %}{% endblock %}
-</head>
+{% block js %}{% endblock %}
 
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -112,6 +100,9 @@
 	        		</div>
 	      		</li>
 	      		<li class="nav-item">
+	        		<a class="nav-link" href="javascript:paste_pkgs()">Package list to paste</a>
+	      		</li>	 
+	      		<li class="nav-item">
 	        		<a class="nav-link {{ menu_about }}" href="{{ url_for('about') }}">About</a>
 	      		</li>	      		
 	    </ul>
@@ -131,7 +122,7 @@
 
 				<div id="check_updates" class="progress-div">
 						Checking for updates... <br />
-						<div id="progressbar" style="width: 200px; height: 19px;"></div>
+						<div id="progressbar"></div>
 						<br />
 				</div>
 
@@ -182,6 +173,29 @@
 				</div>
 				{% block content %}{% endblock %}
 
+
+				<!-- modal windows for pastebin url -->
+				<div class="modal hide fade" id="modal-paste-url">
+				  <div class="modal-dialog modal-dialog-centered modal-lg">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title">Url with list your packages</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<span>
+				      		<input value="" id="paste-url" type="text" style="width:100%" readonly>
+				      	</span>
+				      </div>
+				         <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+				      </div>
+				  </div>
+				  </div>
+				</div><!-- modal windows for pastebin url -->
+				
 			</div> <!-- span9 -->
 
 		</div> <!-- row -->
@@ -195,7 +209,7 @@
 			  Code licensed under the <a href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)" target="_blank">
 			  original BSD License</a>.
 	        </p>
-	    </footer>
+	    </footer>	    
 
 	</div> <!-- container -->
 

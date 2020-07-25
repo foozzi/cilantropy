@@ -12,7 +12,7 @@ plist_sample_text="""
     <array>
         <string>{python}</string>
         <string>-m</string>
-        <string>cilantropy.main</string>
+        <string>cilantropy.__main__</string>
     </array>
 
     <key>RunAtLoad</key>

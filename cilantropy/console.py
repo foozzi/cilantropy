@@ -6,89 +6,32 @@
 :mod:`console` -- Cilantropy entry-point for console commands
 ==================================================================
 '''
-from .cilantropy import get_shared_data, get_pkg_res
-from .cilantropy import get_pypi_search, get_pypi_releases
+from .helpers import get_shared_data
+from .helpers import get_pkg_res
+from .helpers import get_pypi_search
+from .helpers import get_pypi_releases
+from .helpers import parse_dict
+from .helpers import get_kv_colored
+from .helpers import get_field_formatted
+from .helpers import create_paste_template
 from . import metadata
-from .settings import __version__, __author__, __author_url__
+from .settings import __version__
+from .settings import __author__
+from .settings import __author_url__
+from .settings import TEKNIK_PASTE_API
+
+from flask import json
 
 from docopt import docopt
+import urllib
+import urllib.request
 
 from colorama import init
-from colorama import Fore, Back, Style
+from colorama import Fore
+from colorama import Back
+from colorama import Style
 
 import pkg_resources
-
-def ellipsize(msg, max_size=80):
-    '''This function will ellipsize the string.
-
-    :param msg: Text to ellipsize.
-    :param max_size: The maximum size before ellipsizing,
-                    default is 80.
-    :return: The ellipsized string if len > max_size, otherwise
-             the original string.
-    '''
-    if len(msg) >= max_size:
-        return '%s (...)' % msg[0:max_size-6]
-    else:
-        return msg
-
-def parse_dict(mdata, key, ellip=False):
-    ''' This function will read the field from the dict and
-    if not present will return the string 'Not Specified'
-
-    :param mdata: the distribution info dict
-    :param key: the key of the dict
-    :ellip: if it will ellipsize
-    :return: the string message or 'Not Specified' if empty
-    '''
-    try:
-        data = mdata[key]
-        if ellip:
-            return ellipsize(data)
-        else:
-            return data
-    except KeyError:
-        return 'Not Specified'
-
-def get_kv_colored(key, value):
-    text = Fore.WHITE + Style.BRIGHT + '  %s: ' % key.capitalize()
-    text += Fore.WHITE + Style.NORMAL + value
-    return text
-
-def get_field_formatted(mdata, key):
-    ''' This function will get the formatted and colored 
-    key data from the dictionary.
-
-    :param mdata: distribution dict
-    :param key: the key of the dict
-    :return: the formatted and colored string
-    '''
-    
-    def recursive_dict(d, depth=2, final=''):
-        final_str = final
-        for k,v in sorted(d.items(), key=lambda x: x[0]):
-            if isinstance(v, dict):
-                if depth==2:
-                    final_str += Fore.BLUE + Style.BRIGHT
-                else:
-                    final_str += Fore.WHITE + Style.NORMAL
-
-                final_str += '  ' * depth + str(k) + '\n'
-                final_str += recursive_dict(v, depth+1, final)
-            else:
-                final_str =+ ('  ')*depth + str(k) + ' ' + str(v) + '\n'
-        return final_str
-
-    field = parse_dict(mdata, key.lower())
-    
-    if isinstance(field, list):
-        field = ', '.join(field)
-
-    if isinstance(field, dict):
-        field = '\n\n' + recursive_dict(field)
-
-    text = get_kv_colored(key, field)
-    return text
 
 def cmd_show(args, short=False):
     '''This function implements the package show command.
@@ -294,7 +237,7 @@ def cmd_check(args):
     else:
         print('No versions found on PyPI !')
 
-def cmd_scripts(arguments):
+def cmd_scripts(args):
     filt = arguments['<filter>']
 
     print(Fore.YELLOW + Style.BRIGHT + \
@@ -310,6 +253,18 @@ def cmd_scripts(arguments):
         print(Fore.BLUE + Style.BRIGHT + entry.module_name, end='')
         print(Fore.BLUE + Style.NORMAL + '(' + entry.attrs[0] + ')', end='\n')
 
+def cmd_paste(args):
+    template_data = create_paste_template()
+
+    data = urllib.parse.urlencode({"code": template_data})
+    res = urllib.request.urlopen(TEKNIK_PASTE_API, bytes(data, encoding="utf-8"))
+    result = json.loads(res.read().decode('utf-8'))
+
+    if 'result' in result:
+        print(Fore.GREEN + Style.BRIGHT + 'Paste url: {}'.format(result['result']['url']))
+    else:
+        print(Fore.RED + Style.BRIGHT + 'ERROR PASTE!')
+
 def run_main():
     '''Cilantropy - Python List Packages (PLP)
 
@@ -318,6 +273,7 @@ def run_main():
       plp show <project_name>
       plp check <project_name>
       plp scripts [<filter>]
+      plp paste [list your packages to pastebin service]
 
       plp (-h | --help)
       plp --version
@@ -344,6 +300,9 @@ def run_main():
 
     if arguments['scripts']:
         cmd_scripts(arguments)
+
+    if arguments['paste']:
+        cmd_paste(arguments)
 
 if __name__ == '__main__':
     run_main()

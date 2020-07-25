@@ -7,128 +7,34 @@
 ==================================================================
 """
 
-try:
-    reload
-except NameError:
-    from imp import reload
-
-import sys
-import platform
-
-import xmlrpc.client
+import urllib
     
-import pkg_resources as _pkg_resources
 from docutils.core import publish_parts
+import pkg_resources as _pkg_resources
 
-from flask import Flask, render_template, url_for, jsonify, abort
+from flask import Flask
+from flask import render_template
+from flask import url_for
+from flask import jsonify
+from flask import abort
+from flask import json
 
-import cilantropy
 from . import metadata
-from .settings import __version__, __author__, __author_url__
+from .helpers import Crumb
+from .helpers import get_pkg_res
+from .helpers import get_shared_data
+from .helpers import get_pypi_releases
+from .helpers import get_sys_info
+from .helpers import create_paste_template
+from .helpers import DIST_PYPI_CACHE
+
+from .settings import __version__
+from .settings import __author__
+from .settings import __author_url__
+from .settings import TEKNIK_PASTE_API
 
 
 app = Flask(__name__)
-
-PYPI_XMLRPC = 'http://pypi.python.org/pypi'
-
-# This is a cache with flags to show if a distribution
-# has an update available
-DIST_PYPI_CACHE = set()
-
-
-class Crumb(object):
-    """ Represents each level on the bootstrap breadcrumb. """
-    def __init__(self, title, href='#'):
-        """ Instatiates a new breadcrum level.
-
-        :param title: the title
-        :param href: the link
-        """
-        self.title = title
-        self.href = href
-
-
-def get_pkg_res():
-    reload(_pkg_resources)
-    return _pkg_resources
-
-
-def get_shared_data():
-    """ Returns a new dictionary with the shared-data between different
-    Cilantropy views (ie. a lista of distribution packages).
-
-    :rtype: dict
-    :return: the dictionary with the shared data.
-    """
-    shared_data = {'pypi_update_cache': DIST_PYPI_CACHE,
-                   'distributions': [d for d in get_pkg_res().working_set]}
-
-    return shared_data
-
-
-def get_pypi_proxy():
-    """ Returns a RPC ServerProxy object pointing to the PyPI RPC
-    URL.
-
-    :rtype: xmlrpclib.ServerProxy
-    :return: the RPC ServerProxy to PyPI repository.
-    """
-    return xmlrpc.client.ServerProxy(PYPI_XMLRPC)
-
-
-def get_pypi_releases(dist_name):
-    """ Return the releases available at PyPI repository and sort them using
-    the pkg_resources.parse_version, the lastest version is on the 0 index.
-
-    :param dist_name: the distribution name
-    :rtype: list
-    :return: a list with the releases available at PyPI
-    """
-    pypi = get_pypi_proxy()
-
-    show_hidden = True
-    ret = pypi.package_releases(dist_name, show_hidden)
-
-    if not ret:
-        ret = pypi.package_releases(dist_name.capitalize(), show_hidden)
-
-    ret.sort(key=lambda v: _pkg_resources.parse_version(v), reverse=True)
-
-    return ret
-
-def get_pypi_search(spec, operator='or'):
-    """Search the package database using the indicated search spec
-
-    The spec may include any of the keywords described in the above list
-    (except 'stable_version' and 'classifiers'), for example: {'description': 'spam'}
-    will search description fields. Within the spec, a field's value can be a string
-    or a list of strings (the values within the list are combined with an OR), for
-    example: {'name': ['foo', 'bar']}. Valid keys for the spec dict are listed here.
-
-    name
-    version
-    author
-    author_email
-    maintainer
-    maintainer_email
-    home_page
-    license
-    summary
-    description
-    keywords
-    platform
-    download_url
-    
-    Arguments for different fields are combined using either "and" (the default) or "or".
-    Example: search({'name': 'foo', 'description': 'bar'}, 'or'). The results are
-    returned as a list of dicts {'name': package name, 'version': package release version,
-    'summary': package release summary}
-    browse(classifiers)
-    """
-    pypi = get_pypi_proxy()
-    ret = pypi.search(spec, operator)
-    ret.sort(key=lambda v: v['_pypi_ordering'], reverse=True)
-    return ret
 
 
 @app.route('/pypi/check_update/<dist_name>')
@@ -210,24 +116,8 @@ def index():
     data = {'breadpath': [Crumb('Main')]}
 
     data.update(get_shared_data())
-    data['menu_home'] = 'active'
-
-    sys_info = {'Python Platform': sys.platform,
-                'Python Version': sys.version,
-                'Python Prefix': sys.prefix,
-                'Machine Type': platform.machine(),
-                'Platform': platform.platform(),
-                'Processor': platform.processor()}
-
-    try:
-        sys_info['Python Implementation'] = platform.python_implementation()
-    except:
-        pass
-
-    sys_info['System'] = platform.system()
-    sys_info['System Arch'] = platform.architecture()
-
-    data['system_information'] = sys_info
+    data['menu_home'] = 'active'    
+    data['system_information'] = get_sys_info()
 
     return render_template('system_information.html', **data)
 
@@ -260,6 +150,21 @@ def about():
     data['author_url'] = __author_url__
 
     return render_template('about.html', **data)
+
+
+@app.route('/paste_pkgs')
+def paste_pkg():
+    """ Entry-point for publish a Cilantropy list of installed packages """
+
+    template_data = create_paste_template()
+
+    data = urllib.parse.urlencode({"code": template_data})
+    res = urllib.request.urlopen(TEKNIK_PASTE_API, bytes(data, encoding="utf-8"))
+    result = json.loads(res.read().decode('utf-8'))
+    if 'result' in result:
+        return jsonify({'result': result['result']['url'], 'error': False})
+    else:
+        return jsonify({'result': None, 'error': True})
 
 
 @app.route('/distribution/<dist_name>')

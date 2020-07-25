@@ -1,0 +1,12 @@
+Packages:
+
+{% for pkg in packages.distributions -%}
+	{{pkg}}
+{% endfor %}
+
+------------------------------
+
+Python Platform: {{python_platform}}
+Python Version: {{python_version}}
+Python Prefix: {{python_prefix}}
+Python Implementation: {{python_implementation}}

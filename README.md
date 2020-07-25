@@ -71,18 +71,6 @@ and `cilantropy` (both in `contrib/systemd`) to `/etc/systemd/system` and
 
 All standard systemd service management commands (e.g. `systemctl enable` and `systemctl start`) apply.
 
-### Installing as an Upstart service
-
-On Linux systems having [Upstart](http://upstart.ubuntu.com/) you can set up Cilantropy as a service easily as follow.
-
-- copy `contrib/upstart/cilantropy.conf` to `/etc/init/`
-- make a symbolic link for it in `/etc/init.d/`:
-
-    ```shell
-    $ ln -s /etc/init/cilantropy.conf /etc/init.d/cilantropy
-    ```
-- copy `contrib/upstart/cilantropy` to `/etc/default/`
-
 #### Service management
 
 ```shell
@@ -132,6 +120,7 @@ You only need to call the script (the -w option will automatically open your bro
       plp show <project_name>
       plp check <project_name>
       plp scripts [<filter>]
+      plp paste [list your packages to pastebin service]
 
       plp (-h | --help)
       plp --version
@@ -184,6 +173,10 @@ Cilantropy uses the following external projects:
 
 > Docutils is an open-source text processing system for processing plaintext documentation
 > into useful formats, such as HTML or LaTeX.
+
+[flit](https://pypi.python.org/pypi/flit) (for build and install package)
+
+> Flit is a simple way to put Python packages and modules on PyPI.
 
 ## Compatibility
 

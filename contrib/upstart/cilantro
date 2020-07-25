@@ -1,4 +1,0 @@
-# Configuration for the Cilantropy service
-
-HOST=0.0.0.0
-PORT=3000

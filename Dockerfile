@@ -12,4 +12,4 @@ ENV HOME /webapp
 WORKDIR /webapp
 
 ENTRYPOINT ["uwsgi"]
-CMD ["--http", "0.0.0.0:8080", "--wsgi-file", "wsgi.py", "--callable", "app", "--processes", "1", "--threads", "8"]
+CMD ["--http", "0.0.0.0:5000", "--wsgi-file", "wsgi.py", "--callable", "app", "--processes", "1", "--threads", "8"]

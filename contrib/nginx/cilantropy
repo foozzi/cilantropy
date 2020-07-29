@@ -1,0 +1,13 @@
+server {
+    listen 80;
+    server_name site.com www.site.com;
+    location /cilantropy/ {
+        rewrite ^/cilantropy/(.*) /$1  break;
+        proxy_connect_timeout   90s;
+        proxy_send_timeout  120s;
+        proxy_read_timeout  120s;
+        include uwsgi_params;
+        # change this for your socket file
+        uwsgi_pass unix:///home/cilantropy/cilantropy.sock;
+    }
+}

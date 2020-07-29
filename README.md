@@ -8,6 +8,10 @@ a command-line interface for Pythonistas. Today we have many nice distribution u
 distribute, etc, but we don't have a nice visual approach to inspect current installed packages,
 show projects metadata, check for PyPI updates, etc. 
 
+## Demo
+[Demo Cilantropy](https://cilantropy.cc/demo/)
+
+
 ## Screenshots
 
 ### Screenshot: The home
@@ -65,11 +69,15 @@ uwsgi --http 0.0.0.0:8080 --wsgi-file wsgi.py --callable app --processes 1 --thr
 ### Installing as a systemd service
 
 If you're running Linux with [systemd](http://www.freedesktop.org/wiki/Software/systemd)
+(before edit path and other configs in `contrib/systemd/cilantropy.service`)
 installed, you can register Cilantropy as a service by copying `cilantropy.service`
-and `cilantropy` (both in `contrib/systemd`) to `/etc/systemd/system` and
-`/etc/conf.d`, respectively.
+(both in `contrib/systemd`) to `/etc/systemd/system`.
 
 All standard systemd service management commands (e.g. `systemctl enable` and `systemctl start`) apply.
+
+### uWSGI + Nginx
+
+[Manual](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uswgi-and-nginx-on-ubuntu-18-04-ru)
 
 #### Service management
 

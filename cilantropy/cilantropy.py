@@ -33,9 +33,35 @@ from .settings import __author__
 from .settings import __author_url__
 from .settings import TEKNIK_PASTE_API
 
+from .dist_worker import Updater
+
 
 app = Flask(__name__)
 
+
+@app.route('/pypi/upgrade/<dist_name>')
+def pypi_upgrade(dist_name):
+    """ Upgrade package and return installation-log
+    to web interface.
+
+    :param dist_name: distribution name
+    :rtype: text
+    :return installation-log text
+    """
+    pkg_res = get_pkg_res()
+    try:
+        pkg_dist_version = pkg_res.get_distribution(dist_name).version
+    except _pkg_resources.DistributionNotFound:
+        abort(404)
+
+    updater = Updater(dist_name)    
+    res, status_code = updater.upgrade()
+
+    if not status_code:
+        DIST_PYPI_CACHE.remove(dist_name.lower())
+
+    return render_template('pypi_upgrade.html', result=res.strip(), 
+        status_code=status_code)
 
 @app.route('/pypi/check_update/<dist_name>')
 def check_pypi_update(dist_name):
@@ -224,6 +250,7 @@ def distribution(dist_name=None):
     data['distinfo'] = distinfo
     data['entry_map'] = pkg_dist.get_entry_map()
     data['location'] = '{}/{}'.format(pkg_dist.location, dist_name)
+    data['pypi_update_cache'] = DIST_PYPI_CACHE
 
     if parts is not None:
         data['description_render'] = parts['body']

@@ -34,8 +34,13 @@
 		{% elif last_version_differ and last_is_great %}
 
 			<div class="alert alert-info">
-				<p><strong>New version available !</strong> PyPI repository has a new version of the package !</p>
+				<p><strong>New version available !</strong> PyPI repository has a new version of the package !</p>				
 			</div>
+			<div class="alert alert-danger">
+			  <p><strong>Please make sure</strong> that updating this package will not affect your system! Please use a virtual environment</p>	
+			  <p><button class="btn btn-warning" id="btn_check_upgrade2">Upgrade this package</button></p>
+			</div>			
+			
 			<p>
 				A new version of the package <strong>{{ dist_name }}</strong> was found in the official
 				PyPI repository. You have the version <strong>{{ current_version }}</strong> 
@@ -90,7 +95,7 @@
 
 		{% endif %}
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer">      	
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
       </div>
     </div>
@@ -101,5 +106,20 @@
 <script type="text/javascript">
 $('#btn_dismiss').click(function() {
 	$('#modal-update').modal('hide');
+});
+// button for install upgrades is click trigger
+$('#btn_check_upgrade2').click(function() {
+	$('#modal-update').modal('hide');
+	var button = $(this)
+	$(button).prop('disabled', true);
+	$(button).text('Upgrading...');
+
+	$.get('/pypi/upgrade/{{ dist_name }}', function(data) {
+		$('#modal-upgrade .modal-dialog').html(data);
+		$('#modal-upgrade').modal('show');
+		
+		$(button).prop('disabled', false);
+		$(button).text('Upgrade this package');
+	});		
 });
 </script>

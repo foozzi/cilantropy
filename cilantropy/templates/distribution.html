@@ -17,20 +17,34 @@
 
 	$('#btn_check_updates').button()
 
+	// button for check updates is click trigger
 	$('#btn_check_updates').click(function() {
-		$(this).prop('disabled', true);
-		$(this).text('Checking...');
+		var button = $(this)
+		$(button).prop('disabled', true);
+		$(button).text('Checking...');
 
 		$.get('/pypi/releases/{{ dist.project_name }}', function(data) {
 			$('#modal-update .modal-dialog').html(data);
 			$('#modal-update').modal('show');
 			
-			$('#btn_check_updates').prop('disabled', false);
-			$('#btn_check_updates').text('Check updates');
+			$(button).prop('disabled', false);
+			$(button).text('Check updates');
 		});		
 	});
+	// button for install upgrades is click trigger
+	$('#btn_check_upgrade').click(function() {
+		var button = $(this)
+		$(button).prop('disabled', true);
+		$(button).text('Upgrading...');
 
-
+		$.get('/pypi/upgrade/{{ dist.project_name }}', function(data) {
+			$('#modal-upgrade .modal-dialog').html(data);
+			$('#modal-upgrade').modal('show');
+			
+			$(button).prop('disabled', false);
+			$(button).text('Upgrade this package');
+		});		
+	});
  });
 
 </script>
@@ -53,7 +67,13 @@
 	  <div class="card-header">Available Actions</div>
 	  <div class="card-body text-dark">
 	    <p class="card-text">
-	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>
+	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>	
+	    	{% if dist.project_name|lower in pypi_update_cache %}
+	    	<div class="alert alert-danger">
+			  <p><strong>Please make sure</strong> that updating this package will not affect your system! Please use a virtual environment</p>	
+			  <p><button class="btn btn-warning" id="btn_check_upgrade">Upgrade this package</button></p>
+			</div>		
+	    	{% endif %}
 	    </p>
 	  </div>
 	</div>
@@ -120,5 +140,13 @@
   </div>
 </div>
 
+<!-- Modal for upgrades information -->
+<div class="modal hide fade" id="modal-upgrade">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+    </div>
+  </div>
+</div>
 
 {% endblock %}

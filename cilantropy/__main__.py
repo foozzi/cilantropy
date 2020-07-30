@@ -3,6 +3,7 @@ import logging
 from .cilantropy import app
 from .settings import __version__, __author__
 
+
 def run_main():
     """ The main entry-point of Cilantropy. """
 

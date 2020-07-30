@@ -28,6 +28,7 @@ DIST_PYPI_CACHE = set()
 
 PYPI_XMLRPC = 'http://pypi.python.org/pypi'
 
+
 class Crumb(object):
 	""" Represents each level on the bootstrap breadcrumb. """
 	def __init__(self, title, href='#'):
@@ -88,6 +89,7 @@ def get_pypi_releases(dist_name):
 
 	return ret
 
+
 def get_pypi_search(spec, operator='or'):
 	"""Search the package database using the indicated search spec
 
@@ -145,93 +147,109 @@ def get_sys_info():
 
 
 def create_paste_template():
-    """ Create template with system info and packages list """
+	""" Create template with system info and packages list """
 
-    sys_info = get_sys_info()
+	sys_info = get_sys_info()
 
-    with open(os.path.join(os.path.dirname(__file__),
-              'templates/{}'.format(PASTE_PKG_TEMPLATE)), 'r') as file:
-        template = Template(file.read())
+	with open(os.path.join(os.path.dirname(__file__),
+			  'templates/{}'.format(PASTE_PKG_TEMPLATE)), 'r') as file:
+		template = Template(file.read())
 
-        template_data = template.render(packages=get_shared_data(),
-                python_platform=sys_info['Python Platform'],
-                python_version=sys_info['Python Version'],
-                python_prefix=sys_info['Python Prefix'],
-                python_implementation=sys_info['Python Implementation'])
+		template_data = template.render(packages=get_shared_data(),
+				python_platform=sys_info['Python Platform'],
+				python_version=sys_info['Python Version'],
+				python_prefix=sys_info['Python Prefix'],
+				python_implementation=sys_info['Python Implementation'])
 
-        return template_data
+		return template_data
 
 
 # helper functions for 'plp'
 
 def ellipsize(msg, max_size=80):
-    '''This function will ellipsize the string.
+	'''This function will ellipsize the string.
 
-    :param msg: Text to ellipsize.
-    :param max_size: The maximum size before ellipsizing,
-                    default is 80.
-    :return: The ellipsized string if len > max_size, otherwise
-             the original string.
-    '''
-    if len(msg) >= max_size:
-        return '%s (...)' % msg[0:max_size-6]
-    else:
-        return msg
+	:param msg: Text to ellipsize.
+	:param max_size: The maximum size before ellipsizing,
+					default is 80.
+	:return: The ellipsized string if len > max_size, otherwise
+			 the original string.
+	'''
+	if len(msg) >= max_size:
+		return '%s (...)' % msg[0:max_size-6]
+	else:
+		return msg
+
 
 def parse_dict(mdata, key, ellip=False):
-    ''' This function will read the field from the dict and
-    if not present will return the string 'Not Specified'
+	''' This function will read the field from the dict and
+	if not present will return the string 'Not Specified'
 
-    :param mdata: the distribution info dict
-    :param key: the key of the dict
-    :ellip: if it will ellipsize
-    :return: the string message or 'Not Specified' if empty
-    '''
-    try:
-        data = mdata[key]
-        if ellip:
-            return ellipsize(data)
-        else:
-            return data
-    except KeyError:
-        return 'Not Specified'
+	:param mdata: the distribution info dict
+	:param key: the key of the dict
+	:ellip: if it will ellipsize
+	:return: the string message or 'Not Specified' if empty
+	'''
+	try:
+		data = mdata[key]
+		if ellip:
+			return ellipsize(data)
+		else:
+			return data
+	except KeyError:
+		return 'Not Specified'
+
 
 def get_kv_colored(key, value):
-    text = Fore.WHITE + Style.BRIGHT + '  %s: ' % key.capitalize()
-    text += Fore.WHITE + Style.NORMAL + value
-    return text
+	text = Fore.WHITE + Style.BRIGHT + '  %s: ' % key.capitalize()
+	text += Fore.WHITE + Style.NORMAL + value
+	return text
+
 
 def get_field_formatted(mdata, key):
-    ''' This function will get the formatted and colored 
-    key data from the dictionary.
+	''' This function will get the formatted and colored 
+	key data from the dictionary.
 
-    :param mdata: distribution dict
-    :param key: the key of the dict
-    :return: the formatted and colored string
-    '''
-    
-    def recursive_dict(d, depth=2, final=''):
-        final_str = final
-        for k,v in sorted(d.items(), key=lambda x: x[0]):
-            if isinstance(v, dict):
-                if depth==2:
-                    final_str += Fore.BLUE + Style.BRIGHT
-                else:
-                    final_str += Fore.WHITE + Style.NORMAL
+	:param mdata: distribution dict
+	:param key: the key of the dict
+	:return: the formatted and colored string
+	'''
+	
+	def recursive_dict(d, depth=2, final=''):
+		final_str = final
+		for k,v in sorted(d.items(), key=lambda x: x[0]):
+			if isinstance(v, dict):
+				if depth==2:
+					final_str += Fore.BLUE + Style.BRIGHT
+				else:
+					final_str += Fore.WHITE + Style.NORMAL
 
-                final_str += '  ' * depth + str(k) + '\n'
-                final_str += recursive_dict(v, depth+1, final)
-            else:
-                final_str =+ ('  ')*depth + str(k) + ' ' + str(v) + '\n'
-        return final_str
+				final_str += '  ' * depth + str(k) + '\n'
+				final_str += recursive_dict(v, depth+1, final)
+			else:
+				final_str =+ ('  ')*depth + str(k) + ' ' + str(v) + '\n'
+		return final_str
 
-    field = parse_dict(mdata, key.lower())
-    
-    if isinstance(field, list):
-        field = ', '.join(field)
+	field = parse_dict(mdata, key.lower())
+	
+	if isinstance(field, list):
+		field = ', '.join(field)
 
-    if isinstance(field, dict):
-        field = '\n\n' + recursive_dict(field)
+	if isinstance(field, dict):
+		field = '\n\n' + recursive_dict(field)
 
-    text = get_kv_colored(key, field)
-    return text
+	text = get_kv_colored(key, field)
+	return text
+
+
+# helper functions for dist_worker
+
+def is_venv():
+	""" Just check is cilantropy in vitrual environment
+
+	:rtype boolean
+	:return True if Cilantropy now in virtual envitonment
+	or False if not
+	"""
+	return (hasattr(sys, 'real_prefix') or
+			(hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))

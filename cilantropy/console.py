@@ -238,7 +238,7 @@ def cmd_check(args):
         print('No versions found on PyPI !')
 
 def cmd_scripts(args):
-    filt = arguments['<filter>']
+    filt = args['<filter>']
 
     print(Fore.YELLOW + Style.BRIGHT + \
         'Script Name'.ljust(23) + 'Project Name'.ljust(21) + 'Module Name')

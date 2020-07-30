@@ -65,10 +65,15 @@
 	<div class="col-5">
 	<div class="card border-dark mb-3">
 	  <div class="card-header">Available Actions</div>
-	  <div class="card-body text-dark">
-	    <p class="card-text">
-	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>	
+	  <div class="card-body text-dark">	  	
+	    <p class="card-text">	    		    	
+	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>		    	
 	    	{% if dist.project_name|lower in pypi_update_cache %}
+	    	{% if is_venv == False %}
+		    	<div class="alert alert-warning" role="alert">
+				  <p><strong>Be sure</strong> that you are not currently in a virtual environment, updating system packages may cause your system to malfunction</p>
+				</div>
+			{% endif %}
 	    	<div class="alert alert-danger">
 			  <p><strong>Please make sure</strong> that updating this package will not affect your system! Please use a virtual environment</p>	
 			  <p><button class="btn btn-warning" id="btn_check_upgrade">Upgrade this package</button></p>

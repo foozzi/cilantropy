@@ -36,6 +36,11 @@
 			<div class="alert alert-info">
 				<p><strong>New version available !</strong> PyPI repository has a new version of the package !</p>				
 			</div>
+			{% if is_venv == False %}
+		    	<div class="alert alert-warning" role="alert">
+				  <p><strong>Be sure</strong> that you are not currently in a virtual environment, updating system packages may cause your system to malfunction</p>
+				</div>
+			{% endif %}
 			<div class="alert alert-danger">
 			  <p><strong>Please make sure</strong> that updating this package will not affect your system! Please use a virtual environment</p>	
 			  <p><button class="btn btn-warning" id="btn_check_upgrade2">Upgrade this package</button></p>

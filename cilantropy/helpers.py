@@ -20,6 +20,10 @@ import xmlrpc.client
 
 from jinja2 import Template
 
+from colorama import Fore
+from colorama import Style
+
+
 PASTE_PKG_TEMPLATE = 'paste_pkg_template.html'
 
 # This is a cache with flags to show if a distribution

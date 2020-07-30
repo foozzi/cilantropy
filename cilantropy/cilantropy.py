@@ -27,6 +27,7 @@ from .helpers import get_pypi_releases
 from .helpers import get_sys_info
 from .helpers import create_paste_template
 from .helpers import DIST_PYPI_CACHE
+from .helpers import is_venv
 
 from .settings import __version__
 from .settings import __author__
@@ -116,6 +117,7 @@ def releases(dist_name):
     data["dist_name"] = dist_name
     data["pypi_info"] = pypi_rel
     data["current_version"] = pkg_dist_version
+    data['is_venv'] = is_venv()
 
     if pypi_rel:
         pypi_last_version = pkg_res.parse_version(pypi_rel[0])
@@ -251,6 +253,7 @@ def distribution(dist_name=None):
     data['entry_map'] = pkg_dist.get_entry_map()
     data['location'] = '{}/{}'.format(pkg_dist.location, dist_name)
     data['pypi_update_cache'] = DIST_PYPI_CACHE
+    data['is_venv'] = is_venv()
 
     if parts is not None:
         data['description_render'] = parts['body']

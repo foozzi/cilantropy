@@ -98,7 +98,12 @@ $ sudo service cilantropy status
 ## Android (Termux)
 
 You can use Cilantropy on your android device with Termux:
-![termux](https://i.imgur.com/QMBsvCJ.jpg%5B =200x) ![termux2](https://imgur.com/wNjGwNY.jpg =200x) ![termux3](https://imgur.com/LGad31u.jpg =200x) ![termux4](https://imgur.com/4e5JONy.jpg =200x) ![android](https://imgur.com/kkQKXrG.jpg =200x)
+```shell
+$ pkg upgrade
+$ pkg install python
+$ pip install cilantropy
+```
+<img src="https://i.imgur.com/QMBsvCJ.jpg" width="250px" /> <img src="https://imgur.com/wNjGwNY.jpg" width="250px" /> <img src="https://imgur.com/LGad31u.jpg" width="250px" /> <img src="https://imgur.com/4e5JONy.jpg" width="250px" /> <img src="https://imgur.com/kkQKXrG.jpg" width="250px" />
 
 ## Authentication
 

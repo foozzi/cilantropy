@@ -75,5 +75,8 @@ ul.classifier_un ul ul          { background: #D5D5D5; }
 ul.classifier_un ul ul ul       { background: #C5C5C5; }
 
 pre {
-	white-space:pre-line;
+	white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: -ms-pre-wrap;
 }

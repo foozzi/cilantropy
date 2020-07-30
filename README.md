@@ -1,7 +1,9 @@
 # Cilantropy
 
 [![Build Status](https://travis-ci.com/foozzi/cilantropy.svg?branch=master)](https://travis-ci.com/foozzi/cilantropy) [![Build Status](https://img.shields.io/docker/cloud/build/fz11/cilantropy)](https://hub.docker.com/r/fz11/cilantropy) 
-
+[![Downloads](https://img.shields.io/pypi/dm/cilantropy)](https://pypi.org/project/cilantropy/) 
+[![License](https://img.shields.io/pypi/l/cilantropy)](https://github.com/foozzi/cilantropy/blob/master/LICENSE) 
+[![Version Pypi](https://img.shields.io/pypi/v/cilantropy)](https://pypi.org/project/cilantropy/)
 
 Cilantropy is a Python Package Manager interface created to provide an "easy-to-use" visual and also
 a command-line interface for Pythonistas. Today we have many nice distribution utilities like pip,
@@ -16,23 +18,23 @@ show projects metadata, check for PyPI updates, etc.
 
 ### Screenshot: The home
 
-![The home](https://user-images.githubusercontent.com/1178208/87153409-1892ba80-c2c0-11ea-9a48-be7f2e5ed34d.png)
+![The home](https://imgur.com/7dOJWWA.jpg)
 
 ### Screenshot: Installed package information
 
-![Installed package information](https://user-images.githubusercontent.com/1178208/87153582-614a7380-c2c0-11ea-944e-73b3c8f2c21c.png)
+![Installed package information](https://imgur.com/r691yh3.jpg)
 
 ### Screenshot: Check PyPI for updates available
 
-![Updates](https://user-images.githubusercontent.com/1178208/87153686-8939d700-c2c0-11ea-8aee-42e650086e38.png)
+![Updates](https://imgur.com/fSI22th.jpg)
 
-![Updates](https://user-images.githubusercontent.com/1178208/87153749-a078c480-c2c0-11ea-9865-1f04bd132581.png)
+![Updates](https://imgur.com/GO5cEcB.jpg)
 
-![Updates](https://user-images.githubusercontent.com/1178208/87153797-b71f1b80-c2c0-11ea-94d6-488335e867a6.png)
+![Updates](https://imgur.com/zpe2xon.jpg)
 
 ### 'plp' (Python List Packages) console utility
 
-[![asciicast](https://asciinema.org/a/RqK3NwgKPzVvrjmfmaUtpMKno.svg)](https://asciinema.org/a/RqK3NwgKPzVvrjmfmaUtpMKno)
+[![asciicast](https://asciinema.org/a/cKVaIhb6jOUw5PZMiD2Z2VgF1.svg)](https://asciinema.org/a/cKVaIhb6jOUw5PZMiD2Z2VgF1)
 
 ## How to Install
 
@@ -63,7 +65,7 @@ services:
 
 ### uWSGI
 ```bash
-uwsgi --http 0.0.0.0:8080 --wsgi-file wsgi.py --callable app --processes 1 --threads 8
+uwsgi --http 0.0.0.0:5000 --wsgi-file wsgi.py --callable app --processes 1 --threads 8
 ```
 
 ### Installing as a systemd service
@@ -93,9 +95,10 @@ $ sudo service cilantropy stop
 $ sudo service cilantropy status
 ```
 
-#### Service customization
+## Android (Termux)
 
-You can customize the host and port the cilantropy service will be listening on by editing the file `/etc/default/cilantropy`.
+You can use Cilantropy on your android device with Termux:
+![termux](https://i.imgur.com/QMBsvCJ.jpg%5B =200x) ![termux2](https://imgur.com/wNjGwNY.jpg =200x) ![termux3](https://imgur.com/LGad31u.jpg =200x) ![termux4](https://imgur.com/4e5JONy.jpg =200x) ![android](https://imgur.com/kkQKXrG.jpg =200x)
 
 ## Authentication
 

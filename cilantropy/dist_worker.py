@@ -10,6 +10,8 @@
 import subprocess
 import sys
 
+from .helpers import check_pypi_stable_version
+
 
 def main_worker(cmd):
 	""" Main worker for run subproccess and 
@@ -31,8 +33,8 @@ def main_worker(cmd):
 		return "The pip command did not succeed: {stderr}".format(
 				stderr=e.stderr.decode("utf-8")
 			), True
-
-	return cmd_response.stdout.decode("utf-8").strip(), False
+		
+	return cmd_response.stdout.decode("utf-8").replace(" "*6,"\n"), False
 
 
 
@@ -56,9 +58,15 @@ class Updater:
 
 		:return: Return result `main_worker`
 		"""
-		cmd = "{pip3_cmd} {pip_install} {dist_name} {pip_upgrade}".format(
+
+		version = check_pypi_stable_version(self.dist_name)
+		if not version:
+			version = ''
+
+		cmd = "{pip3_cmd} {pip_install} {dist_name}=={stable} {pip_upgrade}".format(
 			pip3_cmd=self.pip3_cmd, pip_install=self.pip_install,
-			dist_name=self.dist_name, pip_upgrade=self.pip_upgrade
+			dist_name=self.dist_name, pip_upgrade=self.pip_upgrade,
+			stable=version
 		)		
 
 		return main_worker(cmd)

@@ -40,7 +40,7 @@
 		$.get('/pypi/upgrade/{{ dist.project_name }}', function(data) {
 			$('#modal-upgrade .modal-dialog').html(data);
 			$('#modal-upgrade').modal('show');
-			
+
 			$(button).prop('disabled', false);
 			$(button).text('Upgrade this package');
 		});		

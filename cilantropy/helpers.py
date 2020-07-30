@@ -14,16 +14,23 @@ except NameError:
 
 import os
 import sys
+import json
 import platform
 import pkg_resources as _pkg_resources
+from pip._vendor.packaging.version import parse
 import xmlrpc.client
 
 from jinja2 import Template
 
+import requests
+
 from colorama import Fore
 from colorama import Style
+ 
 
-
+# Entry-point for check stable version packages
+URL_PATTERN_INFO_DIST = 'https://pypi.python.org/pypi/{package}/json'
+URL_PATTERN_INFO_DIST_VERSION = 'https://pypi.org/pypi/{package}/{version}/json'
 PASTE_PKG_TEMPLATE = 'paste_pkg_template.html'
 
 # This is a cache with flags to show if a distribution
@@ -92,6 +99,51 @@ def get_pypi_releases(dist_name):
 	ret.sort(key=lambda v: _pkg_resources.parse_version(v), reverse=True)
 
 	return ret
+
+
+def get_description_from_remote(dist_name, version):
+	""" Just returned description from remote 
+	repository pypi
+
+	:param: dist_name: the disctribution name
+	:param: version: the disctribution version
+	:rtype: string
+	:return: disctribution desctiption text
+	"""
+	req = requests.get(URL_PATTERN_INFO_DIST_VERSION.format(
+		package=dist_name,
+		version=version
+	))
+
+	if req.status_code == requests.codes.ok:
+		try:
+			return req.json()['info']['description']
+		except:
+			return None		
+	else:
+		return None
+
+
+def check_pypi_stable_version(dist_name):
+	""" Return last stable version package from pypi.org
+
+	:param dist_name: the distribution name
+	:rtype: string
+	:return lastest stable version string (like 1.1.0)
+	"""
+	req = requests.get(URL_PATTERN_INFO_DIST.format(package=dist_name))
+	version = parse('0')
+	if req.status_code == requests.codes.ok:
+		j = json.loads(req.text)
+		releases = j.get('releases', [])
+		for release in releases:
+			ver = parse(release)
+			if not ver.is_prerelease:
+				version = max(version, ver)
+	else:
+		return False
+
+	return version
 
 
 def get_pypi_search(spec, operator='or'):

@@ -6,7 +6,8 @@ $(document).ready(function() {
 
 	$('#modal-paste-url').modal({
 	    keyboard: true, show:false
-    });   
+    });       
+
 });
 
 // Sets the value of the progress bar

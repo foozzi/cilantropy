@@ -10,9 +10,11 @@
       		{% if status_code == True %}
       			<span class="badge badge-danger">{{result}}</span>
       		{% else %}
-      			<code>
-      				{{result}}
-	      		</code>
+          <pre>
+      			<code id="hl-js" class="bash">
+      				  {{result -}}
+            </code>
+          </pre>
 	      	{% endif %}
       </div>
       <div class="modal-footer">
@@ -24,6 +26,10 @@
 	$(document).ready(function(){
 		 $('#modal-upgrade-close*').click(function() {
 			location.reload(); 
-		});
+		});    
+     $('code#hl-js').each(function(i, block) {
+
+      hljs.highlightBlock(block);
+    });
 	})
 </script>

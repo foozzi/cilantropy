@@ -7,7 +7,7 @@
 ==================================================================
 """
 
-import urllib
+import requests
     
 from docutils.core import publish_parts
 import pkg_resources as _pkg_resources
@@ -28,6 +28,8 @@ from .helpers import get_sys_info
 from .helpers import create_paste_template
 from .helpers import DIST_PYPI_CACHE
 from .helpers import is_venv
+from .helpers import check_pypi_stable_version
+from .helpers import get_description_from_remote
 
 from .settings import __version__
 from .settings import __author__
@@ -79,13 +81,12 @@ def check_pypi_update(dist_name):
     except _pkg_resources.DistributionNotFound:
         abort(404)
 
-    pypi_rel = get_pypi_releases(dist_name)
+    pypi_last_version = check_pypi_stable_version(dist_name)
 
-    if pypi_rel:
-        pypi_last_version = pkg_res.parse_version(pypi_rel[0])
+    if pypi_last_version:
         current_version = pkg_res.parse_version(pkg_dist_version)
 
-        if pypi_last_version > current_version:
+        if str(pypi_last_version) > str(current_version):
             DIST_PYPI_CACHE.add(dist_name.lower())
             return jsonify({"has_update": 1})
 
@@ -104,7 +105,7 @@ def releases(dist_name):
 
     :param dist_name: the package name (distribution name).
     """
-    pkg_res = get_pkg_res()
+    pkg_res = get_pkg_res()    
 
     data = {}
     try:
@@ -113,6 +114,7 @@ def releases(dist_name):
         abort(404)
 
     pypi_rel = get_pypi_releases(dist_name)
+    pypi_last_version = check_pypi_stable_version(dist_name)
 
     data["dist_name"] = dist_name
     data["pypi_info"] = pypi_rel
@@ -120,11 +122,14 @@ def releases(dist_name):
     data['is_venv'] = is_venv()
 
     if pypi_rel:
-        pypi_last_version = pkg_res.parse_version(pypi_rel[0])
         current_version = pkg_res.parse_version(pkg_dist_version)
-        last_version = pkg_dist_version.lower() != pypi_rel[0].lower()
-
-        data["last_is_great"] = pypi_last_version > current_version
+        if pypi_last_version:
+            last_version = str(pkg_dist_version).lower() != str(pypi_rel[0]).lower()
+            data["last_is_great"] = str(pypi_last_version) > str(current_version)
+        else: 
+            last_version = True
+            data["last_is_great"] = False
+        
         data["last_version_differ"] = last_version
 
         if data["last_is_great"]:
@@ -186,11 +191,9 @@ def paste_pkg():
 
     template_data = create_paste_template()
 
-    data = urllib.parse.urlencode({"code": template_data})
-    res = urllib.request.urlopen(TEKNIK_PASTE_API, bytes(data, encoding="utf-8"))
-    result = json.loads(res.read().decode('utf-8'))
-    if 'result' in result:
-        return jsonify({'result': result['result']['url'], 'error': False})
+    res = requests.post(TEKNIK_PASTE_API, data={"code": template_data})
+    if 'result' in res.json():
+        return jsonify({'result': res.json()['result']['url'], 'error': False})
     else:
         return jsonify({'result': None, 'error': True})
 
@@ -229,7 +232,7 @@ def distribution(dist_name=None):
         pass
 
     parsed, key_known = metadata.parse_metadata(pkg_metadata)
-    distinfo = metadata.metadata_to_dict(parsed, key_known)
+    distinfo = metadata.metadata_to_dict(parsed, key_known)    
 
     parts = None
     """ get description from pep-0426 """

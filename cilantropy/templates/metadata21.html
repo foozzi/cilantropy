@@ -4,7 +4,7 @@
 		{% set description_content_type = distinfo["description-content-type"] %}
 
 		{% if not description_content_type %}
-			<span class="label label-important">No description-content-type specified</span>
+			<span class="badge badge-danger">No description-content-type specified</span>
 		{% elif description_content_type is string %}
 			{{ description_content_type }}
 		{% else %}
@@ -23,7 +23,7 @@
 		{% set provides_extra = distinfo["provides-extra"] %}
 
 		{% if not provides_extra %}
-			<span class="label label-important">No provides-extra specified</span>
+			<span class="badge badge-danger">No provides-extra specified</span>
 		{% elif provides_extra is string %}
 			{{ provides_extra }}
 		{% else %}

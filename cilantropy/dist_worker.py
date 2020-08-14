@@ -14,20 +14,16 @@ from .helpers import check_pypi_stable_version
 
 
 def main_worker(cmd):
-	""" Main worker for run subproccess and 
-	return result or error
+	""" 
+	main worker for run subproccess and return result or error
 
 	:param cmd: full command for run	
-	:return: 2 parameters text, bool with 
-	result and status error (True, False) 
-	"""
+	:return: result string and status error
+	"""	
+
 	try:
 		cmd_response = subprocess.run(
-			cmd,
-			shell=True,
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
-			check=True,
+			cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
 		)
 	except subprocess.CalledProcessError as e:
 		return "The pip command did not succeed: {stderr}".format(

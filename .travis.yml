@@ -4,7 +4,7 @@ python:
   - 3.6
   - 3.8
 
-script: nosetests cilantropy
+script: pytest cilantropy
 install: 
   - pip install flit
   - flit install

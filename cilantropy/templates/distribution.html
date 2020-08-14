@@ -1,157 +1,174 @@
 {% extends "main.html" %}
-
 {% block js %}
 <script type="text/javascript">
-
- $(document).ready(function() {
-
-
-	$('#back-to-top').click(function() {
-		window.scrollTo(0,0);
-		return false;
-	});
-
+  $(document).ready(function() {
+    $('#back-to-top').click(function() {
+      window.scrollTo(0,0);
+      return false;
+    }
+                           );
     $('#modal-update').modal({
-	    keyboard: true, show:false
-    });
-
-	$('#btn_check_updates').button()
-
-	// button for check updates is click trigger
-	$('#btn_check_updates').click(function() {
-		var button = $(this)
-		$(button).prop('disabled', true);
-		$(button).text('Checking...');
-
-		$.get('/pypi/releases/{{ dist.project_name }}', function(data) {
-			$('#modal-update .modal-dialog').html(data);
-			$('#modal-update').modal('show');
-			
-			$(button).prop('disabled', false);
-			$(button).text('Check updates');
-		});		
-	});
-	// button for install upgrades is click trigger
-	$('#btn_check_upgrade').click(function() {
-		var button = $(this)
-		$(button).prop('disabled', true);
-		$(button).text('Upgrading...');
-
-		$.get('/pypi/upgrade/{{ dist.project_name }}', function(data) {
-			$('#modal-upgrade .modal-dialog').html(data);
-			$('#modal-upgrade').modal('show');
-
-			$(button).prop('disabled', false);
-			$(button).text('Upgrade this package');
-		});		
-	});
- });
-
+      keyboard: true, show:false
+    }
+                            );
+    $('#btn_check_updates').button()
+    // button for check updates is click trigger
+    $('#btn_check_updates').click(function() {
+      var button = $(this)
+      $(button).prop('disabled', true);
+      $(button).text('Checking...');
+      $.get('/pypi/releases/{{ dist.project_name }}', function(data) {
+        $('#modal-update .modal-dialog').html(data);
+        $('#modal-update').modal('show');
+        $(button).prop('disabled', false);
+        $(button).text('Check updates');
+      }
+           );
+    }
+                                 );
+    // button for install upgrades is click trigger
+    $('#btn_check_upgrade').click(function() {
+      var button = $(this)
+      $(button).prop('disabled', true);
+      $(button).text('Upgrading...');
+      $.get('/pypi/upgrade/{{ dist.project_name }}', function(data) {
+        $('#modal-upgrade .modal-dialog').html(data);
+        $('#modal-upgrade').modal('show');
+        $(button).prop('disabled', false);
+        $(button).text('Upgrade this package');
+      }
+           );
+    }
+                                 );
+  }
+                   );
 </script>
 {% endblock %}
-
-
 {% block section_title %}
-	<img src="{{ url_for('static', filename='terminal-icon.png') }}" class="midiconlarge"> {{ dist.project_name }} 
-	<small>version {{ dist.version }}</small><br/>
-	{% if distinfo.summary %}<small>{{ distinfo.summary }}</small>{% endif %}
-	<p><span class="badge badge-secondary">{{location}}</span></p>
+<img src="{{ url_for('static', filename='terminal-icon.png') }}" class="midiconlarge"> {{ dist.project_name }} 
+<small>version {{ dist.version }}
+</small>
+<br/>
+{% if distinfo.summary %}
+<small>{{ distinfo.summary }}
+</small>{% endif %}
+<p>
+  <span class="badge badge-secondary">{{location}}
+  </span>
+</p>
 {% endblock %}
-
 {% block content %}
-
-
 <div class="row">
-	<div class="col-5">
-	<div class="card border-dark mb-3">
-	  <div class="card-header">Available Actions</div>
-	  <div class="card-body text-dark">	  	
-	    <p class="card-text">	    		    	
-	    	<button class="btn btn-primary" id="btn_check_updates">Check updates</button>		    	
-	    	{% if dist.project_name|lower in pypi_update_cache %}
-	    	{% if is_venv == False %}
-		    	<div class="alert alert-warning" role="alert">
-				  <p><strong>Be sure</strong> that you are not currently in a virtual environment, updating system packages may cause your system to malfunction</p>
-				</div>
-			{% endif %}
-	    	<div class="alert alert-danger">
-			  <p><strong>Please make sure</strong> that updating this package will not affect your system! Please use a virtual environment</p>	
-			  <p><button class="btn btn-warning" id="btn_check_upgrade">Upgrade this package</button></p>
-			</div>		
-	    	{% endif %}
-	    </p>
-	  </div>
-	</div>
-
-
-
-	{% if  description_render %}
-		{{ description_render|safe }}
-		<br />
-		<a href="#" id="back-to-top">Back to Top</a>
-	{% else %}
-		<div class="alert-message block-message error">
-			<p><strong>No description information available !</strong> Cilantropy wasn't able to find 
-			the description information.</p><br />
-			<ul>
-			  <li>The package probably doesn't have the <strong>Description</strong> field metadata.</li>
-			  <li>Cilantropy wasn't able to find the <strong>PKG-INFO</strong> metadata.</li>
-			</ul>
-		</div>
-	{% endif %}
-
-	</div>
-	<div class="col-7">
-		{% if entry_map['console_scripts'] %}
-			<div class="card" style="padding: 10px 12px;">
-				<h3><img src="{{ url_for('static', filename='terminal-icon.png') }}" class="midiconlarge"> Console Scripts</h3>
-				<p>This package provides the following console scripts:</p>
-
-				<table class="table table-bordered">
-					<thead>
-						<th>Script Name</th>
-						<th>Module Name</th>
-						<th>Function/Method</th>
-					</thead>
-					<tbody>
-						{% for name, entry in entry_map['console_scripts'].items() %}
-							<tr>
-								<td>{{ entry.name }}</td>
-								<td>{{ entry.module_name }}</td>
-								<td>{{ entry.attrs|join(",") }}</td>
-							</tr>	
-						{% endfor %}
-					</tbody>
-				</table>
-
-			</div>
-		{% endif %}
-
-		<div class="card" style="padding: 14px 19px;">
-			<h2><img src="{{ url_for('static', filename='info.png') }}" class="midiconlarge"> Package information</h2><br />
-
-				{% include 'metadata.html' %}
-
-		</div>
-	</div>
+  <div class="col-5">
+    <div class="card border-dark mb-3">
+      <div class="card-header">Available Actions
+      </div>
+      <div class="card-body text-dark">	  	
+        <p class="card-text">	    		    	
+          <button class="btn btn-primary" id="btn_check_updates">Check updates
+          </button>		    	
+          {% if dist.project_name|lower in pypi_update_cache %}
+          {% if is_venv == False %}
+        <div class="alert alert-warning" role="alert">
+          <p>
+            <strong>Be sure
+            </strong> that you are not currently in a virtual environment, updating system packages may cause your system to malfunction
+          </p>
+        </div>
+        {% endif %}
+        <div class="alert alert-danger">
+          <p>
+            <strong>Please make sure
+            </strong> that updating this package will not affect your system! Please use a virtual environment
+          </p>	
+          <p>
+            <button class="btn btn-warning" id="btn_check_upgrade">Upgrade this package
+            </button>
+          </p>
+        </div>		
+        {% endif %}
+        </p>
+    </div>
+  </div>
+  {% if  description_render %}
+  {{ description_render|safe }}
+  <br />
+  <a href="#" id="back-to-top">Back to Top
+  </a>
+  {% else %}
+  <div class="alert-message block-message error">
+    <p>
+      <strong>No description information available !
+      </strong> Cilantropy wasn't able to find 
+      the description information.
+    </p>
+    <br />
+    <ul>
+      <li>The package probably doesn't have the 
+        <strong>Description
+        </strong> field metadata.
+      </li>
+      <li>Cilantropy wasn't able to find the 
+        <strong>PKG-INFO
+        </strong> metadata.
+      </li>
+    </ul>
+  </div>
+  {% endif %}
 </div>
-
+<div class="col-7">
+  {% if entry_map['console_scripts'] %}
+  <div class="card" style="padding: 10px 12px;">
+    <h3>
+      <img src="{{ url_for('static', filename='terminal-icon.png') }}" class="midiconlarge"> Console Scripts
+    </h3>
+    <p>This package provides the following console scripts:
+    </p>
+    <table class="table table-bordered">
+      <thead>
+        <th>Script Name
+        </th>
+        <th>Module Name
+        </th>
+        <th>Function/Method
+        </th>
+      </thead>
+      <tbody>
+        {% for name, entry in entry_map['console_scripts'].items() %}
+        <tr>
+          <td>{{ entry.name }}
+          </td>
+          <td>{{ entry.module_name }}
+          </td>
+          <td>{{ entry.attrs|join(",") }}
+          </td>
+        </tr>	
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  <div class="card" style="padding: 14px 19px;">
+    <h2>
+      <img src="{{ url_for('static', filename='info.png') }}" class="midiconlarge"> Package information
+    </h2>
+    <br />
+    {% include 'metadata.html' %}
+  </div>
+</div>
+</div>
 <!-- Modal for updates information -->
 <div class="modal hide fade" id="modal-update">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-
     </div>
   </div>
 </div>
-
 <!-- Modal for upgrades information -->
 <div class="modal hide fade" id="modal-upgrade">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-
     </div>
   </div>
 </div>
-
 {% endblock %}

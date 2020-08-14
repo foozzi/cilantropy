@@ -1,11 +1,14 @@
 # Cilantropy
 
 [![Build Status](https://travis-ci.com/foozzi/cilantropy.svg?branch=master)](https://travis-ci.com/foozzi/cilantropy) [![Build Status](https://img.shields.io/docker/cloud/build/fz11/cilantropy)](https://hub.docker.com/r/fz11/cilantropy) 
-[![Downloads](https://img.shields.io/pypi/dm/cilantropy)](https://pypi.org/project/cilantropy/) 
+[![Downloads](https://pepy.tech/badge/cilantropy)](https://pepy.tech/project/cilantropy)
 [![License](https://img.shields.io/pypi/l/cilantropy)](https://github.com/foozzi/cilantropy/blob/master/LICENSE) 
 [![Version Pypi](https://img.shields.io/pypi/v/cilantropy)](https://pypi.org/project/cilantropy/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Size repo](https://img.shields.io/github/languages/code-size/foozzi/cilantropy)](https://github.com/foozzi/cilantropy)
 
-Cilantropy is a Python Package Manager interface created to provide an "easy-to-use" visual and also
+
+**Cilantropy** is a Python Package Manager interface created to provide an "easy-to-use" visual and also
 a command-line interface for Pythonistas. Today we have many nice distribution utilities like pip,
 distribute, etc, but we don't have a nice visual approach to inspect current installed packages,
 show projects metadata, check for PyPI updates, etc. 

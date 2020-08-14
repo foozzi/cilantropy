@@ -1,3 +1,5 @@
+
+
 body {
 	font-family: 'Raleway', sans-serif;
 	font-size: 14px;
@@ -7,12 +9,12 @@ body {
 	padding: 8px 30px 0px 14px;
 }
 
-img.midicon { 
+img.midicon {
 	vertical-align: middle;
 	height: 18px;
 }
 
-img.midiconlarge { 
+img.midiconlarge {
 	vertical-align: middle;
 }
 
@@ -36,12 +38,12 @@ img.midiconlarge {
 }
 
 .progress-span {
-	display:none;
+	display: none;
 	text-align: center;
 }
 
 .progress-div {
-	display:none;
+	display: none;
 }
 
 li.classifier_li {
@@ -52,31 +54,37 @@ li.classifier_li {
 ul.classifier_un {
 	padding: 8px 10px;
 	list-style: none;
-	background: #F5F5F5; 
+	background: #F5F5F5;
 	margin: 0px 0px;
 }
 
 ul.classifier_un ul {
-	background: #E5E5E5; 
+	background: #E5E5E5;
 	border-width: 1px;
 	border-style: solid;
 	border-color: #C0C0C0;
 }
 
 .ui-progressbar-value {
-   background:green;
+	background: green;
 }
 
 .ui-progressbar .ui-progressbar-value {
 	margin: 0;
 }
 
-ul.classifier_un ul ul          { background: #D5D5D5; }
-ul.classifier_un ul ul ul       { background: #C5C5C5; }
+ul.classifier_un ul ul {
+	background: #D5D5D5;
+}
+
+ul.classifier_un ul ul ul {
+	background: #C5C5C5;
+}
 
 pre {
 	white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -o-pre-wrap;
-    white-space: -ms-pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: -ms-pre-wrap;
 }
+

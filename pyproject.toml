@@ -28,7 +28,7 @@ requires = [
 ]
 
 [tool.flit.metadata.requires-extra]
-test = ["nose"]
+test = ["pytest"]
 dev = ["flit>=2,<4"]
 uwsgi = ["uWSGI>=2.0.19.1"]
 

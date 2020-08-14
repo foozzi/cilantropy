@@ -37,4 +37,4 @@ cilantropy = "cilantropy.__main__:run_main"
 plp = "cilantropy.console:run_main"
 
 [tool.flit.metadata.urls]
-Download = "https://github.com/foozzi/cilantropy/archive/0.2.5.tar.gz"
+Download = "https://github.com/foozzi/cilantropy/archive/0.2.7.tar.gz"
